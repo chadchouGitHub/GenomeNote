@@ -5,10 +5,10 @@
 ## A first important step is to identify which rows (variable) are associated with treatment and control
 ##
 library(downloader)
-url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
+url <- "http://journals.plos.org/plosbiology/article/asset?unique&id=info:doi/10.1371/journal.pbio.0020259.sd006"
 filename <- tempfile()
 download(url,destfile=filename)
-dat <- read.csv(filename)
+dat <- read.csv("journal.pbio.0020259.sd005.csv")
 head(dat) ##quick look at the data 
 str(dat) ## This also can tell you what rows (variable) are associated with treatment and control.
 
@@ -99,6 +99,23 @@ with(sleep, t.test(extra[group == 1], extra[group == 2]))
 ## Formula interface
 t.test(extra ~ group, data = sleep)
 
+
+## Read txt file in a folder into a DF
+
+directory <- "your.work.directoty" # where your data files are. 
+# It depends on your OS (Windows, Linux, MacOS)
+ndirectory <- "your.new.directory"
+files <- dir(directory)
+files.to.read <- paste(directory, files, sep="/") 
+files.to.write <- paste(ndirectory, files, sep="/")
+
+for(i in 1:length(files.to.read) )
+{
+        d <- read.table(files.to.read[i], header=TRUE)
+        temp <- d[c(1,seq(100, 9000, by=100)), ]
+        write.table(temp, file=files.to.write[i], 
+                    row.names=FALSE)
+}
 
 
 
