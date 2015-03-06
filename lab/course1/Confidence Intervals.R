@@ -15,7 +15,7 @@ print(mu_chow)
 ## But most of time we will not have total population in hand. 
 ## So we took sample to see how much different between sample average in total population average.
 
-N <- 30
+N <- 5
 hf <- sample(chowPopulation,N)
 ## Standard error (SE) is always small than standard diviation (SD). 
 se <- sd(hf)/sqrt(N) ## standard error
@@ -34,9 +34,9 @@ interval
 
 library(rafalib)
 
-B <- 100
+B <- 250
 mypar2(1,1)
-plot(mean(chowPopulation)+c(-7,7),c(1,1),type="n",
+plot(mean(chowPopulation)+c(-3.5,3.5),c(1,1),type="n",
      xlab="weight",ylab="interval",ylim=c(1,B))
 abline(v=mean(chowPopulation))
 for(i in 1:B){
@@ -50,8 +50,31 @@ for(i in 1:B){
         color <- ifelse(covered,1,2) # use ifelse() to decide the color value 1 for ture 
         ## 2 for false
         print(color) ## this I use to see waht is the color value "1" or "2"
-        lines( interval, c(i,i),col=color)
+        lines( interval, c(i,i),col=color) ## lines() is draw a line between points.
+        ## interval is two element vector, and c(i,i) also two elements vector.
+        ## each serve as x and y to give the lines() functions to draw the line between 2 points.
 }
+
+
+
+## Connection between confidence intervals and p-values
+
+## Does the confidence interval cover the 0 ?
+## ??? Not very clear in this.  But in T-test. It is the difference of the mean between two groups.
+## So Cover 0 will mean no difference in this interval?????
+## 95% cf is +/- 2 SD or +/-2 SE in t-state???
+library(downloader)
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
+filename <- "femaleMiceWeights.csv"
+if (!file.exists(filename)) download(url,destfile=filename)
+dat <- read.csv(filename)
+controlIndex <- which(dat$Diet=="chow")
+treatmentIndex <- which(dat$Diet=="hf")
+control <- sample(dat[controlIndex,2], 10)
+treatment <- sample(dat[treatmentIndex,2], 10)
+t.test(treatment,control)
+
+t.test(treatment,control,conf.level=0.948)
 
 
 
