@@ -106,6 +106,76 @@ plot(cumsum(s$d^2)/sum(s$d^2)*100,ylab="Percent variability explained",ylim=c(0,
 ## What is this mean? Does this mean half of the col (elements: 189) in "d" can skip?
 
 
+## Below example shows that you only need 94 col from u,v d to make new Y (Yhat).
+## I don't know how it decide to use 94. I think it is about half of col (189/2).
+k <- 94
+Yhat <- U[,1:k] %*% D[1:k,1:k] %*% t(V[,1:k])
+resid <- Y - Yhat
+boxplot(resid,ylim=Range,range=0)
+boxplot(resid[,1:10],ylim=Range, range=0) ## Note: resid is a 500x189 matrix each col have 500 numbers. So 
+## I use another line to look just first 10 col of resid. The 189 cols are too small to see the box.
+
+## Therefore, by using only half as many dimensions we retain most of the variability in our data
+## Note: This is call half dimensions...
+
+## Note: Here is how to see the variability in two Y and Yhat matrix.
+
+var(as.vector(resid))/var(as.vector(Y)) # as.vector() will convert Y and resid to a group of numbers, not matrix. 
+## So we can use var() to get variation of each grroup. 
+## Note: the resid is Y-Yhat, so the fraction of resid's var in Y's var will tell us how much the difference the
+## Yhat has from Y matrix.
+## [1] 0.03914882
+
+## We say that we "explain 96% of the variability". ****** So NOT keep the 96% similiarity.****
+
+## We can use D to know this w/o to make Yhat and resid matrix.
+
+1-sum(s$d[1:k]^2)/sum(s$d^2)
+
+
+##  SVD not for two highly correction col. Here is a example.
+
+
+
+m <- 100
+n <- 2
+x <- rnorm(m)
+e <- rnorm(n*m,0,0.01)
+Y <- cbind(x,x)+e  ## e was add to every element in this matrix, so the 200 numbers are different by "e".
+## But the col 1 and col 2 are highly correlated. 
+Y1 <-  cbind(x,x) ## I use Y1 to compare to Y w/o "e". Two colunms are the same.
+
+cor(Y) ## We can use cor() function to see how they are correlated between each col pair.
+
+rowMeans(Y)
+
+d <- svd(Y)$d
+d[1]^2/sum(d^2)
+
+## We only explain 1% of variability of this matrix.
+
+
+m <- 100
+n <- 25
+x <- rnorm(m)
+e <- rnorm(n*m,0,0.01)
+Y <- replicate(n,x)+e
+d <- svd(Y)$d
+
+cor(Y) ## This will be 25x25 matrix here. All are 0.99999
+sum(d[1:20]^2/sum(d^2))
+
+sum(d[1]^2/sum(d^2))
+
+## Check for vraicbility, there is no big different between "1:20" and just "1".
+
+
+
+
+
+
+
+
 
 
 
