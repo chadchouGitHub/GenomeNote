@@ -31,6 +31,21 @@ plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",
      main=paste("correlation =",signif(cor(x,y),2))) ## signif() is round(). "2" is two digi after point. But here is 
 ## "0.50" so it shows 0.5 only.
 
+## Note correlation between x and y is 0.5 In this plot, we can see taller father has taller son.
+
+
+## We motivate this statistic by trying to predict son’s height using the father’s.
+## Suppose we are asked to guess the height of randomly select sons by tell you his father's high.
+
+
+
+
+## Stratification
+
+groups <- split(y,round(x)) ##split y by round(x)  ????
+boxplot(groups)
+
+
 
 
 
