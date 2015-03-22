@@ -46,6 +46,21 @@ groups <- split(y,round(x)) ##split y by round(x)  ????
 boxplot(groups)
 
 
+print(mean(y[ round(x) == 72]))
+## round(x)==72 will give a logic list T or L, and use T and F to select the y for mean.
+## only x bwtween 71.50 ~72.49 will give 72
+##  a <- y[ round(x) == 72]
+##  b <- x[round(x)==72]
+## I use this to line to check...
+
+
+
+
+
+
+
+
+
 
 
 
