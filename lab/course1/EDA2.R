@@ -54,14 +54,60 @@ print(mean(y[ round(x) == 72]))
 ## I use this to line to check...
 
 
+### Bi-variate normal distribution
+## Not sure I understand this yet!!
+## Here is something I may understand so far:
+## By fix X in x, then Y will be normal distribution.
+## Note: Fix a value x and look at all the pairs (X,Y) for which X=x. Generally, 
+## in Statistics we call this exercise conditionion. We are conditioning Y on X.
+
+groups <- split(y,round(x)) 
+mypar2(2,2) ## You need to load library(rafalib) before to call mypar2()
+for(i in c(5,8,11,14)){
+        qqnorm(groups[[i]],main=paste0("X=",names(groups)[i]," strata"),
+               ylim=range(y),xlim=c(-2.5,2.5))
+        qqline(groups[[i]])
+}
 
 
+groups[[5]] ## group 63 i=5
+groups[[8]] ## group 66 i=8
+groups[[11]] ## group 69 i=11
+groups[[14]] ## group 72 i=14
+summary(round(x)) ## There are group 59 ~75 base on round(x)
+
+## Here is correlation demo.
+## (There is a very long  bala bala.........to define the corrleation... I don't get it so .. 
+## going to check with other  reference)
 
 
+x=(x-mean(x))/sd(x)
+y=(y-mean(y))/sd(y)
+means=tapply(y,round(x*4)/4,mean) ## How this work??? y and round(x*4) has same length Then what is the means for?
+## It is a array, so each "x" has a group of y. It is the mean of each x group. So in the means array, only 25 groups 
+## split by x
+## Also in the tapply() round(x*4)/4 will become the name of array. (just like index. )
+
+fatherheights=as.numeric(names(means)) ## So here we need to make name to number again to plot the number with y.
+mypar2(1,1)
+plot(fatherheights,means,ylab="average of strata of son heights",ylim=range(fatherheights))
+abline(0,cor(x,y))
 
 
+##  Spearman’s correlation (This is new.)
 
+## Just like the average and standard deviation are not good summaries 
+## when the data is not well approximated by the normal distribution, the correlation is not a good summary 
+## when pairs of lists are not approximated by the bivariate normal distribution. 
 
+a=rnorm(100);a[1]=10 ## random produce 100 number, and them assign the first element a[1] to 10.
+
+b=rnorm(100);b[1]=11 ## random produce 100 numbers, and then make the b[1] to 11.
+
+plot(a,b,main=paste("correlation =",signif(cor(a,b),2))) ## signif() is round(), so what is the different?
+
+## By adding two very large a[1] b[1] into each a and b groups. We have cor() about 0.5, 
+## but two group is not correlated.
 
 
 
