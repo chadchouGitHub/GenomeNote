@@ -46,13 +46,51 @@ load(filename)
 library(rafalib)
 mypar2(1,1)
 dat <- list(Treatment1=x,Control=y, Treatment2=z) ## Make list vector w/ x and y and name each as 
-## treatment and control.
+## treatment and control. I add z into the plot for practice...
 boxplot(dat,xlab="Group",ylab="Response",xlab="Group",ylab="Response",cex=0)
 ## boxplot make bar and lines from mean, SD, ....and Highest lowest...
 stripchart(dat,vertical=TRUE,method="jitter",pch=16,add=TRUE,col=1)
 ## stripchart() put every number dots on the boxplot.
 
 
+##A quick look at the data demonstrates that this difference is mostly driven by just two points. 
 
+
+## Although, a boxplot give many information. But the scale also need to be fit for
+## data.
+## A version showing the data in the log-scale is much more informative.
+library(downloader)
+url <- "https://github.com/kbroman/Talk_Graphs/raw/master/R/fig3.RData"
+filename <- "fig3.RData"
+if (!file.exists(filename)) download(url, filename)
+load(filename)
+library(rafalib)
+mypar2(1,2)
+dat <- list(Treatment=x,Control=y)
+boxplot(dat,xlab="Group",ylab="Response",xlab="Group",ylab="Response",cex=0)
+stripchart(dat,vertical=TRUE,method="jitter",pch=16,add=TRUE,col=1)
+boxplot(dat,xlab="Group",ylab="Response",xlab="Group",ylab="Response",log="y",cex=0)
+##  "log": character indicating if x or y or both coordinates should be plotted 
+## in log scale.
+stripchart(dat,vertical=TRUE,method="jitter",pch=16,add=TRUE,col=1)
+
+## Show the scatterplot not just the regression line
+## Don't hides the scatter
+url <- "https://github.com/kbroman/Talk_Graphs/raw/master/R/fig4.RData"
+filename <- "fig4.RData"
+if (!file.exists(filename)) download(url, filename)
+load(filename)
+mypar2(1,2)
+plot(x,y,lwd=2,type="n")
+fit <- lm(y~x)
+abline(fit$coef,lwd=2)
+b <- round(fit$coef,4)
+text(74, 200, paste("y =", b[1], "+", b[2], "x", "(Bad example)"), adj=c(0,0.5))
+rho <- round(cor(x,y),4) # 0.8567
+text(78, 187,expression(paste(rho," = 0.8567")),adj=c(0,0.5))
+
+plot(x,y,lwd=2)
+fit <- lm(y~x)
+abline(fit$coef,lwd=2)
 
 
