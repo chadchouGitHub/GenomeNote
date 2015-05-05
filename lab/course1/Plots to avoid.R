@@ -190,7 +190,7 @@ segments(rep(0,6), before, rep(1,6), after, col=1)
 boxplot(before,after,names=c("Before","After"),ylab="Response")
 
 
-### Gratuitous 3D ...NO NO NO 3D just curve lines..
+### Gratuitous 3D ...NO NO NO 3D , just use curve lines..
 
 library(downloader)
 filename <- "fig8dat.csv"
@@ -202,5 +202,22 @@ plot(x[,1],x[,2],xlab="log Dose",ylab="Proportion survived",ylim=c(0,1),
 lines(x[,1],x[,3],lwd=2,col=2)
 lines(x[,1],x[,4],lwd=2,col=3)
 legend(1,0.4,c("Drug A","Drug B","Drug C"),lwd=2, col=1:3)
+
+
+plot(x, y1, ylim=c(0,1), type="n", xlab="Dose", ylab="Response") 
+for(i in 1:3) lines(x, z[,i], col=1, lwd=1, lty=2)
+for(i in 1:3) lines(x, y[,i], col=2, lwd=1, lty=2)
+lines(x, ym, col=1, lwd=2)
+lines(x, zm, col=2, lwd=2)
+legend("bottomleft", lwd=2, col=c(1, 2), c("Control", "Treated"))
+
+heights <- cbind(rnorm(8,73,3),rnorm(8,73,3),rnorm(8,80,3),
+                 rnorm(8,78,3),rnorm(8,78,3))
+colnames(heights)<-c("SG","PG","C","PF","SF")
+rownames(heights)<- paste("team",1:8)
+heights
+
+round(heights,1)
+
 
 
